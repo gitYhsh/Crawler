@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.crawl.core.JdCrawlSubController;
+import com.crawl.core.JdCrawlSubDataController;
 import com.crawl.util.Config;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
@@ -39,8 +39,8 @@ public class VisiteWeb {
             
             for(Element item : eles1){
             	String msg = item.select(".gl-item").attr("data-sku");
-//            	String mgs = item.select(".gl-item").select("div.gl-i-wrap").select("div.p-price").html();
-//            	System.out.println(mgs);
+            	//String mgs = item.select(".gl-item").select("div.gl-i-wrap").select("div.p-price").html();
+            	//System.out.println("商品: "+msg+"价格: "+mgs);
             	this.getDetailByCusId(msg);
             }
         }
@@ -72,7 +72,7 @@ public class VisiteWeb {
 	    controller.addSeed(Config.CrawlWebSite);
 	    
 	 // 启动爬虫，爬虫从此刻开始执行爬虫任务，根据以上配置
-	    controller.start(JdCrawlSubController.class, threadNum);
+	    controller.start(JdCrawlSubDataController.class, threadNum);
 		
 		
 	}

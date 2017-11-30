@@ -27,14 +27,14 @@ public class JdLocalDataController extends WebCrawler{
 	 * 解析文件的入口处
 	 * **/
 	public void visit(Page page) {
-		VisiteWeb vis = new VisiteWeb();		
+		VisiteWeb vis = new VisiteWeb();
 		try {
 			vis.GetParaseFile(page);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}		
+	}
 	@Override
 	public int getMyId() {
 		// TODO Auto-generated method stub

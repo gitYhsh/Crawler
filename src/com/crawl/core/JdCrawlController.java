@@ -25,7 +25,7 @@ public class JdCrawlController {
 		config.setCrawlStorageFolder(Config.StorePostion);
 		//config.setMaxDownloadSize(Config.MaxWebNum);
 		config.setMaxPagesToFetch(Config.MaxWebNum);
-		System.out.println(Config.MaxWebNum);
+		//System.out.println(Config.MaxWebNum);
 		config.setPolitenessDelay(Config.PotionNum);
 		config.setMaxDepthOfCrawling(Config.CrawlDepth);
 		

@@ -27,9 +27,13 @@ public class Config {
 	public static Integer MaxWebNum;
 	
 	/**
-	 * 抓取入口
+	 * 抓取入口JD
 	 * **/
 	public static String CrawlWebSite;
+	
+	/**
+	 * 抓取入口TB
+	 * **/
 	
 	/**
 	 * 抓取深度

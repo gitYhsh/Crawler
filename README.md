@@ -33,13 +33,22 @@
 
 	引入外部jar包,,案例的中的lib文件
 ```sql
-	CREATE TABLE JdCustomData (
-	  `id` int(11) NOT NULL AUTO_INCREMENT,
-	  `custom_id` varchar(200) NOT NULL,
-	  `brand_name` varchar(32) DEFAULT NULL,
-	  `custom_name` varchar(125) DEFAULT NULL,
-	  `custom_orgin` varchar(32) DEFAULT NULL,
-	  `custom_weight` varchar(32) DEFAULT NULL,
-	  `custom_price` varchar(125) DEFAULT NULL,
-	  PRIMARY KEY (`id`)
-	) ENGINE=InnoDB AUTO_INCREMENT=106990 DEFAULT CHARSET=utf8
+	CREATE TABLE jdcustomdata (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `custom_id` varchar(200) NOT NULL,
+  `brand_name` varchar(32) DEFAULT NULL,
+  `custom_name` varchar(125) DEFAULT NULL,
+  `custom_orgin` varchar(32) DEFAULT NULL,
+  `custom_weight` varchar(32) DEFAULT NULL,
+  `custom_price` varchar(125) DEFAULT NULL,
+  `custom_comment_count` varchar(32) DEFAULT NULL,
+  `custom_good_count` varchar(32) DEFAULT NULL,
+  `custome_general_count` varchar(32) DEFAULT NULL,
+  `custom_poor_count` varchar(32) DEFAULT NULL,
+  `default_good_count` varchar(32) DEFAULT NULL,
+  `custom_good_rate` varchar(32) DEFAULT NULL,
+  `custom_image_listcount` varchar(32) DEFAULT NULL,
+  `hot_comment_tag_Statistics` varchar(2000) DEFAULT NULL,
+  `current_time` varchar(125) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8

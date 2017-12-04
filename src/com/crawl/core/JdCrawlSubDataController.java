@@ -1,14 +1,26 @@
 package com.crawl.core;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
-
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.crawl.entity.BaseInfo;
+
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -36,8 +48,7 @@ public class JdCrawlSubDataController extends WebCrawler{
 			
 			if (page.getParseData() instanceof HtmlParseData) {  
 	            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-	            String html = htmlParseData.getHtml();
-	            
+	            String html = htmlParseData.getHtml();	            
 	            Document doc = Jsoup.parse(html);
 	            Elements eles1 = doc.select("div.p-parameter");
 	            //Elements eles2 = doc.select("span.p-price");
@@ -51,15 +62,18 @@ public class JdCrawlSubDataController extends WebCrawler{
 	            for(Element item : eles1){  
 	            	String BrandName = item.select("ul#parameter-brand>li").attr("title");
 	            	Elements custom = item.select("ul.parameter2>li");
-
-	            	//System.out.println(custom);
-	            	this.getCustomDetail(custom,BrandName,price);
+	            	try {
+						this.getCustomDetail(custom,BrandName,price);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	            }
 	            
 	        }
 		}
 		//获取详细信息
-		public void getCustomDetail(Elements eln,String BrandName,String price){
+		public void getCustomDetail(Elements eln,String BrandName,String price) throws Exception{
 			
 			List<String> list = new ArrayList<String>();
 			for(Element items : eln){
@@ -68,7 +82,8 @@ public class JdCrawlSubDataController extends WebCrawler{
 				if(list.size()==4){
 					break;
 				}
-			}			
+			}
+						
 			BaseInfo info = new BaseInfo();
 			info.setBrandName(BrandName);
 			info.setPrice(price);
@@ -76,8 +91,63 @@ public class JdCrawlSubDataController extends WebCrawler{
 			info.setWeight(list.get(list.size()-2));
 			info.setCustomName(list.get(0));
 			info.setCustomId(list.get(1));
-			System.out.println(info);
-			DbSave.insertData(info);
+			
+			CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+			//获取价格
+		    HttpPost postPrice = new HttpPost("http://p.3.cn/prices/mgets?skuIds=J_"+list.get(1));
+            HttpResponse res = httpclient.execute(postPrice);
+            
+            if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                String result = EntityUtils.toString(res.getEntity());// 返回json格式：
+                //System.out.println(result);
+                info.setPrice(result);
+                              
+            } 
+            //获取相关连的评论数
+            /***
+             * @parame
+             * 	productId :商品Id
+             *  sortType ：排序规则
+             *  page  ：页数
+             *  pageSize ：每页的显示数量
+             */
+            HttpGet postComment = new HttpGet("https://club.jd.com/comment/productPageComments.action?productId="+list.get(1)+"&score=0&sortType=0&page=0&pageSize=10");
+            HttpResponse response = httpclient.execute(postComment);
+            
+            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                String result1 = EntityUtils.toString(response.getEntity());// 返回json格式           
+                JSONObject ObjectStr = JSON.parseObject(JSON.parseObject(result1).getString("productCommentSummary"));
+              //info.setCustomGoodRate(Str);
+                //获取相应的信息
+                //总的评论
+                info.setCustomCommentCount(ObjectStr.getString("commentCount"));
+                
+                info.setCustomGoodCount(ObjectStr.getString("goodCount"));
+                //一般评论
+                info.setCustomeGeneralCount(ObjectStr.getString("generalCountStr"));
+                //差评
+                info.setCustomPoorCount(ObjectStr.getString("poorCountStr"));            
+                //好评率
+                info.setCustomGoodRate(ObjectStr.getString("goodRate"));
+                //默认评价
+                info.setDefaultGoodCount(ObjectStr.getString("defaultGoodCountStr"));
+                //晒图评论
+                info.setCustomImageListCount(JSON.parseObject(result1).getString("imageListCount"));
+                //热点评论
+                info.setHotCommentTagStatistics(JSON.parseObject(result1).getString("hotCommentTagStatistics"));
+                
+               Date utilDate=new  Date();
+
+                SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                
+                String date = simple.format(utilDate);
+                
+                info.setCurrentTime(date);
+                
+            } 
+            
+            System.out.println(info);
+            DbSave.insertData(info); 
 		}
 		@Override
 		public int getMyId() {

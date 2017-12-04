@@ -8,12 +8,10 @@ public class Main {
 		JdCrawlController jd = new JdCrawlController();
 		TaocrawlerController tb = new TaocrawlerController();
 		try {
-			//jd.InitConfigCrawl();
-			tb.GetCrawlerData();
+			jd.InitConfigCrawl();
+			//tb.GetCrawlerData();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }

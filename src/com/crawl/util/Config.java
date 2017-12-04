@@ -32,9 +32,18 @@ public class Config {
 	public static String CrawlWebSite;
 	
 	/**
-	 * 抓取入口TB
+	 * 启用代理
 	 * **/
+	public static boolean UseProxy;
 	
+	/**
+	 * 代理账号
+	 * **/
+	public static String ProxyUserName;
+	/****
+	 * 代理密码
+	 */
+	public static String ProxyUserPassword;
 	/**
 	 * 抓取深度
 	 * **/
@@ -89,6 +98,10 @@ public class Config {
         DbName = p.getProperty("db.name");
         UserName = p.getProperty("db.username");
         password = p.getProperty("db.password");
+        
+        UseProxy = Boolean.valueOf(p.getProperty("IsUseProxy")); 
+        ProxyUserName = p.getProperty("ProxyUsername");
+        ProxyUserPassword = p.getProperty("ProxyPassword");
 	 }
 	
 }

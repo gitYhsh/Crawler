@@ -1,5 +1,6 @@
 package com.crawl.core;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.slf4j.Logger;
@@ -15,9 +16,13 @@ public class DbSave {
 	 public synchronized static void insertData(BaseInfo info){
 		 
 		 try {
-	            String column = "custom_id,brand_name,custom_name,custom_orgin,custom_weight";
-	            String values = "?,?,?,?,?";
-	            String sql = "insert into data (" + column + ") values(" +values+")";
+	            String column = "custom_id,brand_name,custom_name,custom_orgin,custom_weight,custom_price"
+	            		+ ",custom_comment_count,custom_good_count,custome_general_count,"
+	            		+ "custom_poor_count,default_good_count,custom_good_rate,"
+	            		+ "custom_image_listcount,hot_comment_tag_Statistics,current_crawler_time";
+	            
+	            String values = "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+	            String sql = "insert into jdcustomdata (" + column + ") values(" +values+")";
 	            PreparedStatement pstmt;
 	            pstmt = ConnectionManager.getConnection().prepareStatement(sql);
 	            
@@ -26,6 +31,17 @@ public class DbSave {
 	            pstmt.setString(3, info.getCustomName());
 	            pstmt.setString(4, info.getOrginPlace());
 	            pstmt.setString(5, info.getWeight());
+	            pstmt.setString(6, info.getPrice());
+	            pstmt.setString(7, info.getCustomCommentCount());
+	            pstmt.setString(8, info.getCustomGoodCount());
+	            pstmt.setString(9, info.getCustomeGeneralCount());
+	            pstmt.setString(10, info.getCustomPoorCount());
+	            pstmt.setString(11, info.getDefaultGoodCount());
+	            pstmt.setString(12, info.getCustomGoodRate());
+	            pstmt.setString(13, info.getCustomImageListCount());
+	            pstmt.setString(14, info.getHotCommentTagStatistics());
+	            pstmt.setString(15, info.getCurrentTime());
+	            System.out.println(pstmt);
 	            pstmt.executeUpdate();
 	            pstmt.close();
 	            
@@ -37,4 +53,6 @@ public class DbSave {
 	        }
 		 
 	 }
+	 
+
 }

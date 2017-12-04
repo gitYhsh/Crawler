@@ -35,12 +35,12 @@ public class JdCrawlSubController extends WebCrawler{
 		public void visit(Page page) {
 			
 			if (page.getParseData() instanceof HtmlParseData) {  
-	            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-	            String html = htmlParseData.getHtml();
+	            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();  
+	            String html = htmlParseData.getHtml();  
 	            
-	            Document doc = Jsoup.parse(html);
-	            Elements eles1 = doc.select("div.p-parameter");
-	            //Elements eles2 = doc.select("span.p-price");
+	            Document doc = Jsoup.parse(html);            
+	            Elements eles1 = doc.select("div.p-parameter"); 
+	            Elements eles2 = doc.select("span.p-price");
 	            
 	            String price = "";
 //	            for(Element items:eles2){

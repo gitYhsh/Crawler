@@ -27,20 +27,12 @@ public class VisiteWeb {
 		String url = page.getWebURL().getURL(); 
 		System.out.println(url);
         if (page.getParseData() instanceof HtmlParseData) {
-            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();  
+            HtmlParseData htmlParseData = (HtmlParseData) page.getParseData(); 
             String html = htmlParseData.getHtml();
-            Document doc = Jsoup.parse(html);            
+            Document doc = Jsoup.parse(html);
             Elements eles1 = doc.select("ul.gl-warp");
-//            Elements eles2 = doc.select("span.p-price");
-//            for(Element items:eles2){
-//            	String msg = items.html();
-//            	System.out.println(msg);
-//            }
-            
             for(Element item : eles1){
             	String msg = item.select(".gl-item").attr("data-sku");
-            	//String mgs = item.select(".gl-item").select("div.gl-i-wrap").select("div.p-price").html();
-            	//System.out.println("商品: "+msg+"价格: "+mgs);
             	this.getDetailByCusId(msg);
             }
         }
